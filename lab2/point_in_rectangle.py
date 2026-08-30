@@ -1,5 +1,11 @@
 def point_in_rectangle(x1, y1, x2, y2, xp, yp):
-    return (xp >= x1 and yp >= y1) and (yp <= y2 and xp <= x2)
+    x_left = min(x1, x2)
+    x_right = max(x1, x2)
+
+    y_top = min(y1, y2)
+    y_bottom = max(y1, y2)
+
+    return (xp >= x_left and yp >= y_top) and (xp <= x_right and yp <= y_bottom)
 
 def test_point_in_rectangle():
     print('Tester point_in_rectangle... ', end='')
