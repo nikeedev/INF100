@@ -16,15 +16,33 @@ def wavelength_color(wavelength):
     else:
         return "None"
 
+def thz_color(wavelength):
+    if 400 <= wavelength < 480:
+        return "Red"
+    elif 480 <= wavelength < 510:
+        return "Orange"
+    elif 510 <= wavelength < 530:
+        return "Yellow"
+    elif 530 <= wavelength < 600:
+        return "Green"
+    elif 600 <= wavelength < 620:
+        return "Cyan"
+    elif 620 <= wavelength < 670:
+        return "Blue"
+    elif 670 <= wavelength < 790:
+        return "Violet"
+    else:
+        return "None"
+
+
+
 unit = input("Angi enhet (nm eller THz):\n")
 
 if unit == "nm" or unit == "THz":
     value = int(input(f"Angi verdi i {unit}:\n"))
 
     if unit == "THz":
-        speed_of_light = 300_000_000 # m/s
-
-        color = wavelength_color(int((value * 10**12) / speed_of_light))
+        color = thz_color(value)
 
     if unit == "nm":
         color = wavelength_color(value)

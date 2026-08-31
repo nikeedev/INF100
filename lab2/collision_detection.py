@@ -30,6 +30,7 @@ test_rectangles_overlap()
 ##############################################
 ##########################################
 
+
 def point_in_rectangle(x1, y1, x2, y2, xp, yp):
     x_left = min(x1, x2)
     x_right = max(x1, x2)
@@ -45,7 +46,6 @@ def distance(x, y, xc, yc):
     return d
 
 
-
 def circle_overlaps_rectangle(x1, y1, x2, y2, xc, yc, rc):
     x_left = min(x1, x2)
     x_right = max(x1, x2)
@@ -58,11 +58,13 @@ def circle_overlaps_rectangle(x1, y1, x2, y2, xc, yc, rc):
     y2_utvidet = y_bottom + rc 
 
 
-    if point_in_rectangle(x1 - rc, y1 - rc, x2 + rc, y2 + rc, xc, yc):
+    if point_in_rectangle(x1, y1, x2, y2, xc, yc):
         return True
-    elif x1_utvidet <= xc <= x2_utvidet or y1_utvidet <= yc <= y2_utvidet: 
+    elif not point_in_rectangle(x1_utvidet, y1_utvidet, x2_utvidet, y2_utvidet, xc, yc):
+        return False
+    elif x_left <= xc <= x_right or y_top <= yc <= y_bottom:
         return True
-    elif distance(x1, y1, xc, yc) <= rc and distance(x2, y2, xc, yc) <= rc and distance(x1, y2, xc, yc) <= rc and distance(x2, y1, xc, yc) <= rc:
+    elif distance(x1, y1, xc, yc) <= rc and distance(x2, y1, xc, yc) <= rc and distance(x1, y2, xc, yc) <= rc and distance(x2, y1, xc, yc) <= rc:
         return True
     else:
         return False
