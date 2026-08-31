@@ -4,7 +4,7 @@ def point_in_rectangle(x1, y1, x2, y2, xp, yp):
 
     y_top = min(y1, y2)
     y_bottom = max(y1, y2)
-
+    
     return (xp >= x_left and yp >= y_top) and (xp <= x_right and yp <= y_bottom)
 
 def test_point_in_rectangle():
