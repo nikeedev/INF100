@@ -62,9 +62,13 @@ def circle_overlaps_rectangle(x1, y1, x2, y2, xc, yc, rc):
         return True
     elif not point_in_rectangle(x1_utvidet, y1_utvidet, x2_utvidet, y2_utvidet, xc, yc):
         return False
-    elif x_left <= xc <= x_right or y_top <= yc <= y_bottom:
+    elif x_left <= xc <= x_right:
         return True
-    elif distance(x1, y1, xc, yc) <= rc and distance(x2, y1, xc, yc) <= rc and distance(x1, y2, xc, yc) <= rc and distance(x2, y1, xc, yc) <= rc:
+    elif y_top <= yc <= y_bottom:
+        return True
+    elif distance(x1, y1, xc, yc) <= rc:
+        return True
+    elif distance(x2, y1, xc, yc) <= rc or distance(x1, y2, xc, yc) <= rc or distance(x2, y1, xc, yc) <= rc:
         return True
     else:
         return False
