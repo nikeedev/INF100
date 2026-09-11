@@ -5,7 +5,7 @@ input_file = 'numbers.json'
 file_content = Path(input_file).read_text(encoding='utf-8')
 numbers = json.loads(file_content)
 
-total = 0
+total = 1
 for num in numbers:
 
     # Delelig på tre

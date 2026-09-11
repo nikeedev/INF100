@@ -1,10 +1,7 @@
 def get_endpoints(i, n, x_lo, x_hi):
     diff = x_hi - x_lo
-    
     one_length = diff/n
-    
-    start = x_lo + (one_length * i)
-    
+    start = x_lo + (one_length * i)    
     end = start + one_length
 
     return (start, end)

@@ -1,13 +1,10 @@
 def cross_sum(x):
-    parsed = list(str(x))
-
     total = 0
 
-    for num in parsed:
+    for num in str(x):
         total += int(num)
 
     return total
-
 
 def test_cross_sum():
     print('Tester cross_sum... ', end='')
@@ -17,8 +14,21 @@ def test_cross_sum():
     assert 1 == cross_sum(100)
     print('OK')
 
+
+
 def nth_cross_sum(n, x):
-    
+    count = 0
+    num_to_test = 0
+
+    while count < n:
+        cross = cross_sum(num_to_test)
+        if cross == x:
+            count += 1
+        num_to_test += 1
+
+    return num_to_test - 1
+
+
 
 def test_nth_cross_sum():
     print('Tester nth_cross_sum... ', end='')
@@ -32,4 +42,5 @@ def test_nth_cross_sum():
 if __name__ == "__main__":
     test_cross_sum()
     test_nth_cross_sum()
+
 

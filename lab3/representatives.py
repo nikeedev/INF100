@@ -9,7 +9,7 @@ def main():
         if person['fylke']['id'] == 'Ho':
             people_of_interest.append(person)
 
-    people_of_interest.sort(key=get_first_name_lowercase)
+    people_of_interest.sort(key=get_last_name_lowercase)
     for person in people_of_interest:
         full_name = f"{person['fornavn']} {person['etternavn']} ({person['parti']['id']})"
         print(full_name)
@@ -22,8 +22,8 @@ def download_data():
     return data
 
 
-def get_first_name_lowercase(person):
-    return person['fornavn'].lower()
+def get_last_name_lowercase(person):
+    return person['etternavn'].lower()
 
 
 if __name__ == '__main__':

@@ -30,9 +30,9 @@ def count_values_larger_than(values, threshold):
 
 
 def main():
-    filename = input("Skriv inn filnavn: ")
-    threshold = int(input("Skriv inn terskelverdien: "))
-    
+    filename = input()
+    threshold = int(input())
+
     data = load_emission_data(filename)
     deviation = get_deviations(data)
     count = count_values_larger_than(deviation, threshold)
