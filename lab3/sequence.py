@@ -14,7 +14,6 @@ def test_sequence_for():
 
 test_sequence_for()
 
-
 def sequence_while(n):
     text = ""
     i = 0
