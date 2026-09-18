@@ -25,8 +25,7 @@ def main():
     q3 = sim_results[3 * TRAILS // 4]
 
     print('Simulation average:', mean)
-    print('Simulation quartiles:', q1, q2, q3)
-
+    # print('Simulation quartiles:', q1, q2, q3)
 
 def repeated_simulations(trails, k, p):
     '''
