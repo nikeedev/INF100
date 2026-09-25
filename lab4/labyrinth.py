@@ -42,14 +42,14 @@ def rotate(grid, clockwise):
     if clockwise:
         # Med klokken
         for i in range(len(grid)):
-            for j in range(len(grid[i]) - 1, -1, -1):
+            for j in range(len(grid[0])):
                 new_grid[j][len(grid) - 1 - i] = grid[i][j]
     
     
     else:
         # Mot klokken
-        for i in range(len(grid)- 1, -1,-1):
-            for j in range(len(grid[i]) - 1, -1, -1):
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
                 new_grid[len(grid[0]) - 1 - j][i] = grid[i][j]
     
     # print(new_grid)
