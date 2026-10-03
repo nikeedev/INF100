@@ -62,18 +62,28 @@ def app_started(app):
     # Denne funksjonen kalles én gang ved programmets oppstart.
     # Her skal vi __opprette__ variabler i som behøves i app.
     app.direction = "east"
-    app.info_mode = False
-    app.score = 0
-
-    app.state = "active"
     
-    app.button_size = 16
+    try:
+        app.info_mode = app.info_mode
+    except Exception:
+        app.info_mode = False
+
+    app.score = 0
+    app.state = "active"
+
+
+    app.buttons = [
+        # [x1, y1, x2, y2, "Navn på knapp", scene, funksjon]
+        [app.width/2 - 100, app.height/2 + 25, app.width/2 + 100, app.height/2 + 125, "Retry?", "gameover", retry],
+        [app.width/4, app.height/2 + 160, app.width/4 + 50, app.height/2 + 260, "Back to menu", "gameover", back_to_menu],
+        [app.width/4 * 3, app.height/2 + 150, app.width/4 * 3 + 50, app.height/2 + 210, "Play", "menu", play]
+    ]
 
     app.board = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, -1, 0, 0, 0, 0, -1, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 2, 3, 0, 0, 0, 0, 0],
+        [0, 0, 1, 2, 3, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -82,6 +92,17 @@ def app_started(app):
     app.snake_size = 3
     app.head_pos = (3, 4)
     app.timer_delay = 200
+
+
+def retry(app):
+    app_started(app)
+
+def back_to_menu(app):
+    app.state = "menu"
+
+def play(app):
+    app_started(app)
+
 
 def timer_fired(app):
     # En kontroller.
@@ -122,14 +143,30 @@ def key_pressed(app, event):
     if event.key == "r" and not app.state == "menu":
         app_started(app)
 
-def mouse_moved(app, event):
-    if app.state == "gameover":
-        # for the retry button
-        if point_in_rectangle(app.width/2, app.height/2 + 100, app.width/2 + 40, app.height/2 + 140, event.x, event.y):
-            app.button_size = 25
-        else:
-            app.button_size = 16
+def execute_button_action_if_clicked(app, button, mouse_x, mouse_y):
+    x1, y1, x2, y2, label, scene, func = button
 
+    print(scene)
+    if point_in_rectangle(x1, y1, x2, y2, mouse_x, mouse_y) and app.state == scene:
+        func(app)
+
+def mouse_pressed(app, event):
+    for button in app.buttons:
+        x1, y1, x2, y2, label, scene, func = button
+        if scene == app.state:
+            execute_button_action_if_clicked(app, button, event.x, event.y)
+
+def draw_button(app, canvas, button):
+    x1, y1, x2, y2, output, scene, func = button
+    if app.state == scene:
+        canvas.create_rectangle(x1, y1, x2, y2, fill="lightgray")
+        mid_x = (x1 + x2) / 2
+        mid_y = (y1 + y2) / 2
+
+        if type(output) == str:
+            canvas.create_text(mid_x, mid_y, text=output)
+        else:
+            canvas.create_image(mid_x, mid_y, pil_image=image)
 
 
 def redraw_all(app, canvas):
@@ -156,7 +193,12 @@ def redraw_all(app, canvas):
     elif app.state == "gameover":
         canvas.create_text(app.width/2, app.height/2 - 100, text="Game over", anchor='center', font='Arial 50')
         canvas.create_text(app.width/2, app.height/2 + 11, text=f"Score: {app.score}", anchor='center', font='Arial 20')
-        canvas.create_text(app.width/2, app.height/2 + 100, text=f"Retry?", anchor='center', font=f'Arial {app.button_size}')
+     
+    elif app.state == "menu":
+        canvas.create_text(app.width/2, app.height/2 - 100, text="Snake", anchor='center', font='Arial 50', fill="green")
+
+    for button in app.buttons:
+        draw_button(app, canvas, button)
         
 
 if __name__ == '__main__':
