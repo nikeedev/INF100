@@ -75,8 +75,8 @@ def app_started(app):
     app.buttons = [
         # [x1, y1, x2, y2, "Navn på knapp", scene, funksjon]
         [app.width/2 - 100, app.height/2 + 25, app.width/2 + 100, app.height/2 + 125, "Retry?", "gameover", retry],
-        [app.width/4, app.height/2 + 160, app.width/4 + 50, app.height/2 + 260, "Back to menu", "gameover", back_to_menu],
-        [app.width/4 * 3, app.height/2 + 150, app.width/4 * 3 + 50, app.height/2 + 210, "Play", "menu", play]
+        [app.width/4, app.height/2 + 150, app.width/4 + 50, app.height/2 + 210, "Back to menu", "gameover", back_to_menu],
+        [app.width/2 - 50, app.height/2 - 50, app.width/2 + 50, app.height/2 + 50, "Play", "menu", play]
     ]
 
     app.board = [
@@ -112,6 +112,7 @@ def timer_fired(app):
     if not app.info_mode and app.state == "active":
         move_snake(app)
 
+
 def point_in_rectangle(x1, y1, x2, y2, x, y):
     return (min(x1, x2) <= x <= max(x1, x2)
         and min(y1, y2) <= y <= max(y1, y2))
@@ -122,13 +123,14 @@ def key_pressed(app, event):
     # Funksjonen kan __endre på__ eksisterende variabler i app.
     
     if app.state == "active":
-        if event.key == "Up" or event.key == "w":
+        x, y = app.head_pos
+        if (event.key == "Up" or event.key == "w") and not app.direction == "south":
             app.direction = "north"
-        elif event.key == "Left" or event.key == "a":
+        elif (event.key == "Left" or event.key == "a") and not app.direction == "east":
             app.direction = "west"
-        elif event.key == "Down" or event.key == "s":
+        elif (event.key == "Down" or event.key == "s") and not app.direction == "north":
             app.direction = "south"
-        elif event.key == "Right" or event.key == "d":
+        elif (event.key == "Right" or event.key == "d") and not app.direction == "west":
             app.direction = "east"
 
         if event.key == "Space" and app.info_mode:
@@ -146,7 +148,7 @@ def key_pressed(app, event):
 def execute_button_action_if_clicked(app, button, mouse_x, mouse_y):
     x1, y1, x2, y2, label, scene, func = button
 
-    print(scene)
+    # print(scene)
     if point_in_rectangle(x1, y1, x2, y2, mouse_x, mouse_y) and app.state == scene:
         func(app)
 
@@ -164,7 +166,7 @@ def draw_button(app, canvas, button):
         mid_y = (y1 + y2) / 2
 
         if type(output) == str:
-            canvas.create_text(mid_x, mid_y, text=output)
+            canvas.create_text(mid_x, mid_y, text=output, font="Arial 15")
         else:
             canvas.create_image(mid_x, mid_y, pil_image=image)
 
