@@ -1,0 +1,24 @@
+Meny:
+ - Tilsatt en start meny som viser til skaperen av spillet
+ - Viser en stor tittel **"Snake"**
+ - Viser at du kan trykke på mellomrom for å starte opp spillet
+ 
+How-To:
+ - Tilsatt info om ulike knapper, f.eks. til bevegelse, (re)start av spillet, o.l.
+
+Spillet:
+ - Viser en score
+ - Epler har blitt "realistiske", bildet er hentet i fra Wikimedia Commons, og krevet ingen lisens/akkreditering (CC0 - https://creativecommons.org/publicdomain/zero/1.0/).
+ - Slangen bytter farger mellom kornblomst blå, og gul. 
+ - Det er 2 (hele!) epler, istendenfor én.
+ - Viser high score sånn at personen kan holde styr på hvor mye epler hen må spise for å forbedre scoren.
+ - Score-teksten lyser grønt hvis du har fått høyere score enn high-scoren.
+    
+
+"Gameover":
+ - Regner ut highscoren
+ - Spillet avsluttes med at enten highscoren eller scoren vises. 
+    - High score blir vist med "New high score" hvis nåværende score er høyere enn forrige beste. 
+    - Ellers hvis ingen ny rekord er slått, vises både scoren som personen har fått og high scoren (for å sammenligne med hvor mye mer epler må man spise for å slå rekorden)
+
+

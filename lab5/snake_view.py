@@ -2,11 +2,11 @@ from uib_inf100_graphics.helpers import load_image, scaled_image
 
 def get_color(value):
     if value == 0:
-        return "lightgray"
-    if value >= 1:
-        return "orange"
-    if value <= -1:
-        return "cyan"
+        return "lightgrey"
+    elif value % 2 == 0:
+        return "cornflowerblue"
+    else:
+        return "yellow"
 
 def draw_board(canvas, x1, y1, x2, y2, board, info_mode):
     image = scaled_image(load_image('smol_apple.png'), 0.15)
@@ -27,7 +27,9 @@ def draw_board(canvas, x1, y1, x2, y2, board, info_mode):
 
 
             if board[i][j] == -1:
+                canvas.create_rectangle(x1_i, y1_i, x2_i, y2_i, fill = "lightgrey", outline = 'black')
                 canvas.create_image(cell_x_mid, cell_y_mid, pil_image=image)
+               
             else:
                 canvas.create_rectangle(x1_i, y1_i, x2_i, y2_i, fill = get_color(board[i][j]), outline = 'black')
             

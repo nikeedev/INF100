@@ -44,6 +44,10 @@ def move_snake(app):
     
     if not is_legal_move(app.head_pos, app.board):
         app.state = "gameover"
+        
+        #if app.score > app.highscore:
+        #    app.highscore = app.score
+
         return
 
     if app.board[app.head_pos[0]][app.head_pos[1]] == -1:
@@ -69,14 +73,21 @@ def app_started(app):
         app.info_mode = False
 
     app.score = 0
-    app.state = "active"
+    app.state = "menu"
 
-
+    # Kilde til knapper: https://inf100.ii.uib.no/notat/gui/#eksempel-knapper 
     app.buttons = [
         # [x1, y1, x2, y2, "Navn på knapp", scene, funksjon]
-        [app.width/2 - 100, app.height/2 + 25, app.width/2 + 100, app.height/2 + 125, "Retry?", "gameover", retry],
-        [app.width/4, app.height/2 + 150, app.width/4 + 50, app.height/2 + 210, "Back to menu", "gameover", back_to_menu],
-        [app.width/2 - 50, app.height/2 - 50, app.width/2 + 50, app.height/2 + 50, "Play", "menu", play]
+        # gameover screen
+        [app.width/2 - 50, 260, app.width/2 + 50, 290, "Retry?", "gameover", retry],
+        [app.width/2 - 100, 310, app.width/2 + 100, 340, "Back to menu", "gameover", back_to_menu],
+
+        # how-to menu
+        [app.width/2 - 100, app.height - 60, app.width/2 + 100, app.height - 10, "Back to menu", "how", back_to_menu],
+        
+        # Game menu
+        [app.width/2 - 25, app.height/2 - 50 , app.width/2 + 25, app.height/2, "Play", "menu", play],
+        [app.width/2 - 100, app.height/2 + 100, app.width/2 + 100, app.height/2 + 50, "How to play?", "menu", how_to]
     ]
 
     app.board = [
@@ -94,15 +105,40 @@ def app_started(app):
     app.timer_delay = 200
 
 
+    app.highscore = 0
+
+def reset(app):
+    app.board = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, -1, 0, 0, 0, 0, -1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 2, 3, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]
+     
+    app.direction = "east"
+    app.snake_size = 3
+    app.head_pos = (3, 4)
+    
+    if app.score > app.highscore:
+        app.highscore = app.score
+
+    app.score = 0
+    app.state = "active"
+
 def retry(app):
-    app_started(app)
+    reset(app) 
 
 def back_to_menu(app):
     app.state = "menu"
 
 def play(app):
-    app_started(app)
+    reset(app)
 
+def how_to(app):
+    app.state = "how"
 
 def timer_fired(app):
     # En kontroller.
@@ -135,7 +171,12 @@ def key_pressed(app, event):
 
         if event.key == "Space" and app.info_mode:
             move_snake(app)
-      
+    
+    elif app.state == "menu":
+        if event.key == "Space":
+            reset(app)
+
+
     if event.key == "Escape":
         exit(0)
 
@@ -143,7 +184,13 @@ def key_pressed(app, event):
         app.info_mode = not app.info_mode
 
     if event.key == "r" and not app.state == "menu":
-        app_started(app)
+        reset(app)
+
+
+#######
+# Gjenbruk av kilder i fra linje 75:
+# Kilde: https://inf100.ii.uib.no/notat/gui/#eksempel-knapper
+#####
 
 def execute_button_action_if_clicked(app, button, mouse_x, mouse_y):
     x1, y1, x2, y2, label, scene, func = button
@@ -170,6 +217,9 @@ def draw_button(app, canvas, button):
         else:
             canvas.create_image(mid_x, mid_y, pil_image=image)
 
+##
+#####
+######
 
 def redraw_all(app, canvas):
     # Visningen.
@@ -188,17 +238,33 @@ def redraw_all(app, canvas):
                     font='Arial 10'
             )
         else:
-            canvas.create_text(app.width/2, 11, text=f"Score: {app.score}", anchor='center', font='Arial 10')
-            
+            canvas.create_text(app.width/4, 11, text=f"Score: {app.score}", anchor='center', font='Arial 10', fill="green" if app.score > app.highscore else "black")
+            canvas.create_text(app.width*(3/4), 11, text=f"High score to beat: {app.highscore}", anchor='center', font='Arial 10')
+
         draw_board(canvas, 25, 25, app.width - 25, app.height-25, app.board, app.info_mode)
 
     elif app.state == "gameover":
-        canvas.create_text(app.width/2, app.height/2 - 100, text="Game over", anchor='center', font='Arial 50')
-        canvas.create_text(app.width/2, app.height/2 + 11, text=f"Score: {app.score}", anchor='center', font='Arial 20')
+        canvas.create_text(app.width/2, 50, text="Game over", anchor='center', font='Arial 50')
+
+        if app.score > app.highscore:
+            canvas.create_text(app.width/2, 170, text=f"New high score: {app.score}!", anchor='center', font='Arial 22', fill="green")
+        else:
+            canvas.create_text(app.width/2, 140, text=f"Score: {app.score}", anchor='center', font='Arial 20')
+            canvas.create_text(app.width/2, 170, text=f"High score: {app.highscore}", anchor='center', font='Arial 12')
+
      
     elif app.state == "menu":
-        canvas.create_text(app.width/2, app.height/2 - 100, text="Snake", anchor='center', font='Arial 50', fill="green")
+        canvas.create_text(app.width/2, 50, text="Snake", anchor='center', font='Consolas 50 italic', fill="red")
 
+        canvas.create_text(app.width/2, 100, text="Press space to start", anchor='center', font='Consolas 14')
+
+        canvas.create_text(app.width/2, app.height - 20, text="© nikeedev (Nikita Goncarenko) 2026", anchor='center', font='Arial 12')
+    
+    elif app.state == "how":
+        # ← → ↑ ↓ 
+        canvas.create_text(app.width/2, 40, text="\"How to play this game??\"", anchor="center", font="Arial 30", fill="green")
+        canvas.create_text(app.width/2, 185, text="It is easy :)\n\tUp: ↑ or W\n\tDown: ↓ or S\n\tLeft: ← or A\n\tRight: → or D\n\nPress Space to start the game (at menu)\nPress R to reset the game.\nPress Esc (escape) to close the game completely\n\nIf you are also a good debugging person,\nyou can enable debug mode by pressing I,\nit lets you step through the game loop\nand shows variable stats.", anchor="center", font="Arial 12")
+    
     for button in app.buttons:
         draw_button(app, canvas, button)
         
