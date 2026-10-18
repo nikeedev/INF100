@@ -22,9 +22,7 @@ def filter_earthquakes(earthquake_csv_string, threshold):
     return "\n".join(filtered)
 
 def filter_earthquakes_file(source_filename, target_filename, threshold):
-    csv_input = Path(source_filename).read_text(encoding='utf-8')
-    
-    Path(target_filename).write_text(filter_earthquakes(csv_input, threshold), encoding='utf-8')
+    Path(target_filename).write_text(filter_earthquakes(Path(source_filename).read_text(encoding='utf-8'), threshold), encoding='utf-8')
 
 def test_get_impact():
     print('Tester get_impact... ', end='')
