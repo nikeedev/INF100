@@ -4,6 +4,9 @@ import json
 def main():
     train('words_en.txt', "weights_en.json")
     train('words_no.txt', "weights_no.json")
+    train('words_ru.txt', "weights_ru.json")
+    train('words_lt.txt', "weights_lt.json")
+
 
 def train(training_data_filename, weights_filename):
     # get input
@@ -19,11 +22,14 @@ def train(training_data_filename, weights_filename):
     weights_string = json.dumps(weights)
     Path(weights_filename).write_text(weights_string, encoding="utf-8")
 
+    locale = training_data_filename.split("_")[1].split(".")[0]
+    print(f"Succesfully trained for locale \"{locale}\"")
+
 def extend_weights(weights, word):
     # Klipp opp ordene på alle mulige posisjoner
     # Venstre side kan gi en kontekt
     # Høyre side kan gi en neste token
-    
+    word = word.lower()
     for i in range(len(word)):
         left = word[:i]
         candidate_token = word[i]
