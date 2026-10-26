@@ -1,5 +1,17 @@
-def filter_high_temperatures(path_input, path_output, threshold_temp):
+from pathlib import Path
 
+def filter_high_temperatures(path_input, path_output, threshold_temp):
+    temps = Path(path_input).read_text(encoding="utf-8").splitlines()
+
+    over_threshold = []
+    
+    for temp in temps:
+        split_temp = temp.split(" ")
+        
+        if float(split_temp[1]) >= threshold_temp:
+            over_threshold.append(temp)
+    
+    Path(path_output).write_text("\n".join(over_threshold), encoding="utf-8")
 
 def test_filter_high_temperatures():
     print('Tester filter_high_temperatures... ', end='')
