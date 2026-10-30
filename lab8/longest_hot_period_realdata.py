@@ -2,16 +2,16 @@ from pathlib import Path
 from datetime import datetime
 import requests
 import json
-
+import longest_hot_period_dummy as lh 
 
 def longest_hot_period(client_id, source_id, start_date, end_date, threshold):
     api_endpoint = 'https://frost.met.no/observations/v0.jsonld'
-
+    
     response = requests.get(
         api_endpoint,
         params = {
             'sources': source_id,
-            'referencetime': '2024-04-01/2024-04-07',
+            'referencetime': f'{start_date.date().isoformat()}/{end_date.date().isoformat()}',
             'elements': 'mean(air_temperature P1D)',
             'levels': 'default',
             'timeoffsets': 'default',
@@ -21,9 +21,17 @@ def longest_hot_period(client_id, source_id, start_date, end_date, threshold):
     )
 
     json_data = response.json()
-    print(json.dumps(json_data, indent=2))
+    # data = json.dumps(json_data, indent=2)
+    temps = []
+    for date in json_data["data"]:
+        temps.append(float(date["observations"][0]["value"]))
 
+    start, end = lh.longest_hot_period(temps, threshold)
 
+    return (
+        datetime.fromisoformat(json_data["data"][start]["referenceTime"]),
+        datetime.fromisoformat(json_data["data"][end]["referenceTime"])
+    )
 
 def test_longest_hot_period():
     client_id = Path('client_id.txt').read_text(encoding='utf-8').strip()
@@ -45,5 +53,4 @@ def test_longest_hot_period():
 
 if __name__ == '__main__':
     test_longest_hot_period()
-
 

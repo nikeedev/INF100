@@ -3,7 +3,6 @@ import csv, io
 
 def count_facilities_by_species(path):
     file = Path(path).read_text(encoding="cp1252")
-
     splited = file.splitlines()[1:]
     data = "\n".join(splited)
 
