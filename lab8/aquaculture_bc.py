@@ -24,9 +24,9 @@ for i in range(2, len(table)):
         sea_y_values.append(float(table[i][23]))
 
 
-plt.scatter(land_x_values, land_y_values, c = "darkgreen", alpha=0.3, label="Land")
+plt.scatter(land_x_values, land_y_values, c = "orange", alpha = 0.3, label="Land")
 
-plt.scatter(sea_x_values, sea_y_values, c = "lightblue",  alpha=0.15, label="Sjø")
+plt.scatter(sea_x_values, sea_y_values, alpha = 0.3, label="Sjø")
 
 plt.xlabel('Nord i grader')
 plt.ylabel('Øst i grader')

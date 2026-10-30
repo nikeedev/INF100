@@ -3,30 +3,25 @@ import csv, io
 
 def count_facilities_by_species(path):
     file = Path(path).read_text(encoding="cp1252")
-    splited = file.splitlines()
-    data = "\n".join(sorted(splited))
+
+    splited = file.splitlines()[1:]
+    data = "\n".join(splited)
 
     reader = csv.reader(io.StringIO(data), delimiter=';', quotechar="\"")
-   
     table = list(reader)
     
     fish = {}
-
-    for i in range(2, len(table)):
-        if not table[i][12] in fish:
+    for i in range(1, len(table)):
+        if table[i][12] not in fish:
             fish[table[i][12]] = 1
         else:
             fish[table[i][12]] += 1
     
-    listed_fish = []
-    for key in fish.keys():
-        listed_fish.append([key, fish[key]])
-
-    listed_fish.sort()
-    listed_fish = listed_fish[2:]
+    # listed_fish = listed_fish[2:]
+    fishkeys = sorted(fish.keys())
     
-    for fih in listed_fish:
-        print(f"{fih[0]}: {fih[1]}")
+    for fish_key in fishkeys:
+        print(f"{fish_key}: {fish[fish_key]}")
    
    
 if __name__ == '__main__':
