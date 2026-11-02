@@ -21,7 +21,7 @@ def split_dates(infile, outfile, sep):
         date = row[date_col].split('.')
         try:
             day = date[0]
-            month = date[1]
+K            month = date[1]
             year = date[2]
         except IndexError:
             print(f'WARNING! Failed to get date on line {i+2}: {row}')
