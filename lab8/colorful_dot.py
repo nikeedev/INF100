@@ -68,6 +68,8 @@ def key_pressed(app, event):
 def redraw_all(app, canvas):
     canvas.create_text(app.width/2, 20, text=app.text, anchor="center")
     canvas.create_oval(app.width/2 - app.radius, app.height/2 - app.radius, app.width/2 + app.radius, app.height/2 + app.radius, fill=rgb_to_hex(app.r, app.g, app.b), outline="")
+    
+    canvas.create_text(app.width/2, app.height-20, text="Trykk på 'Space' for å endre endringsraten", anchor="center")
 
 
 
